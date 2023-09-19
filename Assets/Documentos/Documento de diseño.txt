@@ -1,0 +1,24 @@
+- MINIJUEGO -
+
+ELEMENTOS BÁSICOS
+- 2 niveles de dificultad (Normal y Difícil)
+- 1 pantalla
+- 1 botón/control
+
+OBJETIVO
+
+JUGADOR
+
+ENEMIGO
+
+COLECCIONABLES/OBSTÁCULOS
+
+ELEMENTOS GRÁFICOS
+- Estilo de dibujo en papel (revisar esquemas de diseño)
+- Fondo simulando un papel arrugado (tomar múltiples fotos para simular una pequeña animación)
+
+SONIDOS/MÚSICA
+- Sonidos de papel arrugado para la interfaz del menú principal (al seleccionar/pulsar botones)
+- Loop musical sencillo (20 segundos aprox.) para la música de fondo
+
+
