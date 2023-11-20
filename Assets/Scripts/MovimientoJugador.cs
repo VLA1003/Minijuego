@@ -7,6 +7,16 @@ public class MovimientoJugador : MonoBehaviour
     public float velocidadMovimiento = 5f;
 
     private bool bocaAbierta = false;
+    private Collider2D colliderBoca;
+
+    void Start()
+    {
+        colliderBoca = GetComponent<Collider2D>();
+        if (colliderBoca != null)
+        {
+            colliderBoca.enabled = false;
+        }
+    }
 
     void Update()
     {
@@ -28,11 +38,18 @@ public class MovimientoJugador : MonoBehaviour
     void AbrirBoca()
     {
         bocaAbierta = true;
+        if (colliderBoca != null)
+        {
+            colliderBoca.enabled = true;
+        }
     }
 
     void CerrarBoca()
     {
         bocaAbierta = false;
-        Debug.Log("Boca cerrada");
+        if (colliderBoca != null)
+        {
+            colliderBoca.enabled = false;
+        }
     }
 }

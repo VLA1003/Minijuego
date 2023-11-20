@@ -43,3 +43,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Fondo
+    uniqueID: 3679751111
+    locked: 0
+  - name: ElementoFondo
+    uniqueID: 122458851
+    locked: 0
+  - name: ElementoFrontal
+    uniqueID: 63216217
+    locked: 0
