@@ -9,7 +9,6 @@ public class BotónJugar : MonoBehaviour
 
     public void CargarEscenaClick()
     {
-        // Cargar la escena por nombre
         SceneManager.LoadScene(escenaACargar);
     }
 }

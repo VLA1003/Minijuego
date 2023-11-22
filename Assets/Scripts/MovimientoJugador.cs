@@ -11,6 +11,8 @@ public class MovimientoJugador : MonoBehaviour
 
     void Start()
     {
+        QualitySettings.vSyncCount = 1;
+        bocaAbierta = true;
         colliderBoca = GetComponent<Collider2D>();
         if (colliderBoca != null)
         {

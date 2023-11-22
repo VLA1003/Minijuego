@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        QualitySettings.vSyncCount = 1;
         if (Instance == null)
         {
             Instance = this;
@@ -37,21 +38,26 @@ public class GameManager : MonoBehaviour
     {
         actualPuntuacion = 0;
         tiempoActual = tiempoInicial;
+        isGameRunning = true;
         ActualizarInterfaz();
     }
 
     void Update()
     {
-        if (isGameRunning)
+        if (tiempoActual > 0f)
         {
-            if (tiempoActual > 0f)
+            tiempoActual -= Time.deltaTime;
+            ActualizarInterfaz();
+        }
+        else
+        {
+            if (actualPuntuacion >= puntuacionObjetivo)
             {
-                tiempoActual -= Time.deltaTime;
-                ActualizarInterfaz();
+                SiguienteNivel();
             }
             else
             {
-                AcabarPartida(false);
+                FinPartida();
             }
         }
     }
@@ -61,11 +67,6 @@ public class GameManager : MonoBehaviour
         if (isGameRunning)
         {
             actualPuntuacion += puntos;
-
-            if (actualPuntuacion >= puntuacionObjetivo)
-            {
-                SiguienteNivel();
-            }
         }
     }
 
@@ -74,20 +75,21 @@ public class GameManager : MonoBehaviour
         if (isGameRunning)
         {
             actualPuntuacion -= puntos;
-
-            if (actualPuntuacion >= puntuacionObjetivo)
-            {
-                SiguienteNivel();
-            }
         }
     }
 
     void SiguienteNivel()
     {
+        Debug.Log("Has ganado GILIPOLLAS");
         nivelActual++;
         actualPuntuacion = 0;
         tiempoActual = tiempoInicial;
         ActualizarInterfaz();
+    }
+
+    void FinPartida()
+    {
+        Debug.Log("Has perdido GILIPOLLAS");
     }
 
     void ActualizarInterfaz()
@@ -95,18 +97,5 @@ public class GameManager : MonoBehaviour
         textoPuntos.text = "" + actualPuntuacion;
         textoTiempo.text = "" + Mathf.Round(tiempoActual);
         textoNivel.text = "" + nivelActual;
-    }
-
-    void AcabarPartida(bool esVictoria)
-    {
-        isGameRunning = false;
-        if (esVictoria)
-        {
-            Debug.Log("¡Has superado el nivel!");
-        }
-        else
-        {
-            Debug.Log("¡Has perdido!");
-        }
     }
 }
