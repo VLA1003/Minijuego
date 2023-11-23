@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,9 +18,13 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI textoPuntos;
     public TextMeshProUGUI textoTiempo;
-    public TextMeshProUGUI textoNivel;
 
     private bool isGameRunning = true;
+
+    public GameObject lanzadorObjetos;
+    public MovimientoJugador movimientoJugadorScript;
+    
+    public string escenaSiguiente;
 
     void Awake()
     {
@@ -36,10 +41,18 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        movimientoJugadorScript = GameObject.Find("Jugador").GetComponent<MovimientoJugador>();
+        StartCoroutine(ActivarLanzador());
         actualPuntuacion = 0;
         tiempoActual = tiempoInicial;
         isGameRunning = true;
         ActualizarInterfaz();
+    }
+
+    IEnumerator ActivarLanzador()
+    {
+        yield return new WaitForSeconds(2f);
+        lanzadorObjetos.SetActive(true);
     }
 
     void Update()
@@ -80,22 +93,28 @@ public class GameManager : MonoBehaviour
 
     void SiguienteNivel()
     {
+        lanzadorObjetos.SetActive(false);
+        movimientoJugadorScript.enabled = false;
+        StartCoroutine(CargarEscenaSiguiente());
         Debug.Log("Has ganado GILIPOLLAS");
-        nivelActual++;
-        actualPuntuacion = 0;
-        tiempoActual = tiempoInicial;
-        ActualizarInterfaz();
     }
 
     void FinPartida()
     {
+        lanzadorObjetos.SetActive(false);
+        movimientoJugadorScript.enabled = false;
         Debug.Log("Has perdido GILIPOLLAS");
+    }
+
+    IEnumerator CargarEscenaSiguiente()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(escenaSiguiente);
     }
 
     void ActualizarInterfaz()
     {
         textoPuntos.text = "" + actualPuntuacion;
         textoTiempo.text = "" + Mathf.Round(tiempoActual);
-        textoNivel.text = "" + nivelActual;
     }
 }
