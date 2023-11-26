@@ -1,26 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class VolumenMúsica : MonoBehaviour
 {
-    public Slider sliderVolumen;
-    public AudioSource musica;
+    public AudioMixer audioMixer;
+    public Slider slider;
+    public float valorInicial;
+
+    private string volumenMusicaString = "volumenMusica";
 
     void Start()
     {
-        if (musica != null && sliderVolumen != null)
-        {
-            sliderVolumen.value = musica.volume;
-        }
+        valorInicial = PlayerPrefs.GetFloat(volumenMusicaString, 0.5f);
+        slider.value = valorInicial;
+        CambiarVolumen();
     }
 
-    public void AjustarVolumen()
+    public void CambiarVolumen()
     {
-        if (musica != null && sliderVolumen != null)
-        {
-            musica.volume = sliderVolumen.value;
-        }
+        float volumen = slider.value;
+        audioMixer.SetFloat(volumenMusicaString, VolumenEnDecibelios(volumen));
+
+        PlayerPrefs.SetFloat(volumenMusicaString, volumen);
+        PlayerPrefs.Save();
+    }
+
+    float VolumenEnDecibelios(float volumenNormalizado)
+    {
+        float rangoMinimo = 0.0001f;
+        float decibelios = 20.0f * Mathf.Log10(Mathf.Max(volumenNormalizado, rangoMinimo));
+
+        return decibelios;
     }
 }

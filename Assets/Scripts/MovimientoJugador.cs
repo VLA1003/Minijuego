@@ -6,14 +6,22 @@ public class MovimientoJugador : MonoBehaviour
 {
     public float velocidadMovimiento = 5f;
 
-    private bool bocaAbierta = false;
+    public bool bocaAbierta = false;
     private Collider2D colliderBoca;
+    private Animator animator;
+
+    public AudioClip sonidoAbrirBoca;
+    public AudioClip sonidoCerrarBoca;
+    public AudioSource audioSource;
+
+    private bool sonidoReproducido = false;
 
     void Start()
     {
-        QualitySettings.vSyncCount = 1;
         bocaAbierta = true;
         colliderBoca = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
+
         if (colliderBoca != null)
         {
             colliderBoca.enabled = false;
@@ -28,11 +36,13 @@ public class MovimientoJugador : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            sonidoReproducido = false;
             AbrirBoca();
         }
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
+            sonidoReproducido = false;
             CerrarBoca();
         }
     }
@@ -40,18 +50,32 @@ public class MovimientoJugador : MonoBehaviour
     void AbrirBoca()
     {
         bocaAbierta = true;
+        animator.SetBool("haAbiertoBoca", true);
         if (colliderBoca != null)
         {
             colliderBoca.enabled = true;
+        }
+
+        if (!sonidoReproducido && sonidoAbrirBoca != null)
+        {
+            audioSource.PlayOneShot(sonidoAbrirBoca);
+            sonidoReproducido = true;
         }
     }
 
     void CerrarBoca()
     {
         bocaAbierta = false;
+        animator.SetBool("haAbiertoBoca", false);
         if (colliderBoca != null)
         {
             colliderBoca.enabled = false;
+        }
+
+        if (!sonidoReproducido && sonidoCerrarBoca != null)
+        {
+            audioSource.PlayOneShot(sonidoCerrarBoca);
+            sonidoReproducido = true;
         }
     }
 }

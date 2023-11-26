@@ -7,6 +7,16 @@ public class GestorColisiones : MonoBehaviour
     public int puntosPremio = 10;
     public int puntosObstaculo = 5;
 
+    public AudioClip sonidoPremio;
+    public AudioClip sonidoObstaculo;
+
+    public AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Premio"))
@@ -22,13 +32,32 @@ public class GestorColisiones : MonoBehaviour
 
     void ColisionPremio(GameObject prizeObject)
     {
+        if (sonidoPremio != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(sonidoPremio);
+        }
+
         GameManager.Instance.SumarPuntos(puntosPremio);
-        Destroy(prizeObject);
+
+        LeanTween.scale(prizeObject, new Vector3(0f, 0f, 1f), 0.1f).setOnComplete(() =>
+        {
+            Destroy(prizeObject);
+        });
     }
 
     void ColisionObstaculo(GameObject obstacleObject)
     {
+        if (sonidoObstaculo != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(sonidoObstaculo);
+        }
+
         GameManager.Instance.RestarPuntos(puntosObstaculo);
-        Destroy(obstacleObject);
+
+
+        LeanTween.scale(obstacleObject, new Vector3(0f, 0f, 1f), 0.1f).setOnComplete(() =>
+        {
+            Destroy(obstacleObject);
+        });
     }
 }
